@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Equation Solver</title>
+    <script type="text/javascript" src="/eel.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Equation Solver</h1>
+        <div class="form">
+            <label for="q">Enter q:</label>
+            <input class="number" type="number" id="q" required>
+            <br>
+            <label for="n">Enter n:</label>
+            <input class="number" type="number" id="n" required>
+            <br>
+            <div class="check">
+                <label for="verbose">Verbose Output:</label>
+                <input type="checkbox" id="verbose">
+            </div>
+            <br>
+            <button onclick="calculate()">Calculate</button>
+        </div>
+
+        <h2>Results</h2>
+        <div id="results"></div>
+    </div>
+
+    <script>
+        function calculate() {
+            const q = document.getElementById('q').value;
+            const n = document.getElementById('n').value;
+            const verbose = document.getElementById('verbose').checked;
+
+            eel.calculate_equation_and_solve(q, n, verbose)(function(response) {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = `
+                <p><strong>Equation:</strong> ${response.equation_str}</p>
+                <p><strong>Result:</strong> ${response.result}</p> <!-- Displaying the new result -->
+                <h3>Verbose Steps:</h3>
+                <ul>
+                    ${response.verbose_steps.map(step => `<li>${step}</li>`).join('')}
+                </ul>
+            `;
+        });
+
+        }
+    </script>
+</body>
+</html>
